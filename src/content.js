@@ -1,9 +1,12 @@
 /*global chrome*/
 /* src/content.js */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Frame, { FrameContextConsumer }from 'react-frame-component';
 import App from "./App";
+
+
 class Main extends React.Component {
     render() {
         return (
@@ -11,7 +14,7 @@ class Main extends React.Component {
                <FrameContextConsumer>
                {
                   ({document, window}) => {
-                    return <App document={document} window={window} isExt={true}/> 
+                    return <App document={document} window={window} info={this.props.info} isExt={true}/> 
                   }
                 }
                 </FrameContextConsumer>
@@ -20,26 +23,44 @@ class Main extends React.Component {
     }
 }
 
-const app = document.createElement('div');
-app.id = "my-extension-root";
 
-document.body.appendChild(app);
-ReactDOM.render(<Main />, app);
 
-app.style.display = "none";
+function load(info){
+  const app = document.createElement('div');
+  app.id = "my-extension-root";
+  document.body.appendChild(app);
+  if(info){
+    ReactDOM.render(<Main info={info}/>, app);
+  } else {
+    ReactDOM.render(<Main />, app);
+  }
+  app.style.display = "block" 
+}
+
+function clickOut(){
+  document.getElementById("my-extension-root").remove()
+}
+
 
 chrome.runtime.onMessage.addListener(
    function(request, sender, sendResponse) {
       if( request.message === "clicked_browser_action") {
-        toggle();
+       load(request.info);
       }
    }
 );
 
-function toggle(){
-   if(app.style.display === "none"){
-     app.style.display = "block";
-   }else{
-     app.style.display = "none";
-   }
+window.addEventListener('click', function(e){   
+  if (document.getElementById('my-extension-root').contains(e.target)){
+  } else{
+    clickOut()
+  }
+});
+
+window.oncontextmenu = function(e){
+  if (document.getElementById('my-extension-root').contains(e.target)){
+  } else{
+    clickOut()
+  }
 }
+

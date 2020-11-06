@@ -1,8 +1,17 @@
 {
-  "short_name": "My Extension",
-  "name": "My Extension",
-  "version": "1.1",
+  "name": "Booksaver: Highlight to Save Books",
+  "description": "Save books and book threads for later. Booksaver is your librarian for the internet",
+  "version": "1.0.22",
   "manifest_version": 2,
+  "permissions": [
+    "storage", 
+    "contextMenus",
+    "tabs",
+    "http://*/*","https://*/*","file://*/*"
+  ],
+  "icons": { 
+    "128": "icon128.png" 
+   },
   "background": {
     "scripts": ["app/background.js"]
   },

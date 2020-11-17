@@ -83,13 +83,20 @@ class App extends Component {
           items.data = [book];
       }
 
+      let data = {
+        book: book
+    }
+
+      data.book.user = items.user
   
       // Now save the updated items using set
-      chrome.storage.local.set(items, function() {
-          console.log('Data successfully saved to the storage!', items);
-      });
-  });
+        chrome.storage.local.set(items, function() {
+            console.log('Data successfully saved to the storage!', items);
+        });
+
         //additional function here to send to a DB for KPI purposes (DAUs, scraping GoogleBooks from client side, )--> book + bookISBN + source DB
+        chrome.runtime.sendMessage({greeting: "Add Book", data})
+      });
 
        //function to reload from new state/localstorage
       this.setState({
@@ -182,7 +189,7 @@ class App extends Component {
             <p class="mr-2">Shelf</p>
           </div>
           <div class="flex-none mx-2">
-              {this.state.books.map(book => {return(
+              {this.state.books.slice(0).reverse().map(book => {return(
                 <Bookcard book={book} deleteBook={this.deleteBook.bind(this)} shoppingCart={shoppingCart} link={link} closeButton={closeButton}></Bookcard>
               )})}
             </div>

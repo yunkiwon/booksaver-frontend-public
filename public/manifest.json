@@ -1,7 +1,7 @@
 {
   "name": "Booksaver: Highlight to Save Books",
   "description": "Save books and book threads for later. Booksaver is your librarian for the internet",
-  "version": "1.0.22",
+  "version": "1.0.30",
   "manifest_version": 2,
   "permissions": [
     "storage", 

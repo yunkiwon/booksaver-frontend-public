@@ -27,7 +27,7 @@ export default class Bookcard extends Component {
                                 <img src={this.props.link} class="object-contain w-4 opacity-50 hover:opacity-100" alt="link" />
                     </div>
                   </a>
-                  <a href={"https://www.amazon.com/s?k=" + this.props.book.title + " by " + this.props.book.authors + "&i=stripbooks&ref=nb_sb_noss&tag=babelshelf-20"} target="_blank">
+                  <a href={"https://www.amazon.com/s?k=" + this.props.book.title + " by " + this.props.book.authors + "&i=stripbooks&ref=nb_sb_noss&tag=booksaver0f-20"} target="_blank">
                   <div class="flex justify-center items-center border-solid border-1 border-gray-300 rounded-full h-8 w-8 mr-2">
                              <img src={this.props.shoppingCart} class="object-contain w-4 opacity-50 hover:opacity-100" alt="shopping-cart" />
                   </div>

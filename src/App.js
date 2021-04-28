@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import Bookcard from './Bookcard/Bookcard'
 import './styles/app.css';
+
+//not importing properly, import using chrome runtime function 
 import { v4 as uuidv4 } from 'uuid'
 import link from './link.svg'
 import shoppingCart from './shopping-cart.svg'
@@ -54,6 +56,7 @@ class App extends Component {
   })}
 
   changeBook(){
+    //loading first five book results from google API to toggle through
     if(this.state.index < 4){
       this.setState({
         index: this.state.index + 1
@@ -73,12 +76,11 @@ class App extends Component {
 
     chrome.storage.local.get(function(items) {
       if (Object.keys(items).length > 0 && items.data) {
-          // The data array already exists, add to it the new server and nickname
+          // The data array already exists, add it to localstorage 
           book.key = items.data.length 
           items.data.push(book);
       } else {
-          // The data array doesn't exist yet, create it, also creating a UUID to mark the session 
-          items.user = uuidv4();
+          // The data array doesn't exist yet, create it
           book.key = 0; 
           items.data = [book];
       }
@@ -94,17 +96,19 @@ class App extends Component {
             console.log('Data successfully saved to the storage!', items);
         });
 
-        //additional function here to send to a DB for KPI purposes (DAUs, scraping GoogleBooks from client side, )--> book + bookISBN + source DB
+        //additional function here to send to a DB for KPI purposes (DAUs, scraping GoogleBooks from client side to get around API limits)--> book + bookISBN + source DB
         chrome.runtime.sendMessage({greeting: "Add Book", data})
       });
 
-       //function to reload from new state/localstorage
+       //function to reload from new state/localstorage to show new book added without having to reopen extension
       this.setState({
         books: this.state.books.concat(book)
       })
 
   }
 
+ //need to implement deleting book function from the server so that deleted books don't reappear when loading from backend rather than local storage 
+ //workaround by repopulating SQL DB on next update by taking existing local storage books and sending to backend
 
   deleteBook(key){
     var self = this
@@ -127,7 +131,7 @@ class App extends Component {
 
   render(){
 
-    //gets image assets (chrome extension so source is buggy)
+    //gets image assets (chrome extension so source changes on build?)
 
     let link = chrome.runtime.getURL("static/media/link.svg")
     let shoppingCart = chrome.runtime.getURL("static/media/shopping-cart.svg")

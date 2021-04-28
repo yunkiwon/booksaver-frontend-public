@@ -1,9 +1,11 @@
 {
   "name": "Booksaver: Highlight to Save Books",
   "description": "Save books and book threads for later. Booksaver is your librarian for the internet",
-  "version": "1.0.30",
+  "version": "1.0.33",
   "manifest_version": 2,
   "permissions": [
+    "identity",
+    "identity.email",
     "storage", 
     "contextMenus",
     "tabs",

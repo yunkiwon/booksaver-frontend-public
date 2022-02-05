@@ -27,7 +27,13 @@ chrome.runtime.onInstalled.addListener(function(details){
                http.setRequestHeader("Content-Type", "application/json"); 
                http.send(json)
           })
-          //action here to get user email and send
+
+          //redirect user to the instruction page: 
+          chrome.tabs.create({
+               url: 'https://booksaver.info',
+               active: true
+             });
+           
      }
      else if(details.reason == "update"){
           //action here to get user email only if update version = manifest version for the next push, otherwise can assume we have everybody's emails
@@ -56,6 +62,9 @@ chrome.runtime.onInstalled.addListener(function(details){
                     http.setRequestHeader("Content-Type", "application/json"); 
                     http.send(json)
                })
+          }
+          if(thisVersion = "1.0.34"){
+               //function here for redirecting to a webpage for survey information? 
           }
      }
 })
@@ -96,7 +105,6 @@ displayBook = function(word){
 
                        info.push(book);
                        if(info.length == 5){
-                           console.log(info)
                             chrome.tabs.query({active: true, currentWindow:true},function(tabs) {
                               var activeTab = tabs[0];
                               chrome.tabs.sendMessage(activeTab.id, {message: "clicked_browser_action", info});

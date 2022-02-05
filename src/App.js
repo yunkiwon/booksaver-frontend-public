@@ -2,16 +2,9 @@
 
 import React, { Component } from 'react';
 import Bookcard from './Bookcard/Bookcard'
+import Controls from './Controls'
 import './styles/app.css';
 
-//not importing properly, import using chrome runtime function 
-import { v4 as uuidv4 } from 'uuid'
-import link from './link.svg'
-import shoppingCart from './shopping-cart.svg'
-import closeButton from './x.svg'
-import refresh from './refresh.svg'
-import plus from './plus.svg'
-import { white } from 'ansi-colors';
 
 
 class App extends Component {
@@ -51,7 +44,6 @@ class App extends Component {
         self.setState({
           books: items.data
         })
-        console.log(items.data, this.state.books)
       }
   })}
 
@@ -124,14 +116,9 @@ class App extends Component {
   
   }
 
-  delay(){
-    alert("Hello!")
-    console.log(this.state)
- }
-
   render(){
 
-    //gets image assets (chrome extension so source changes on build?)
+    //gets image assets (chrome extension so source changes on build)
 
     let link = chrome.runtime.getURL("static/media/link.svg")
     let shoppingCart = chrome.runtime.getURL("static/media/shopping-cart.svg")
@@ -139,12 +126,12 @@ class App extends Component {
     let plus = chrome.runtime.getURL("static/media/plus.svg")
     let refresh = chrome.runtime.getURL("static/media/refresh.svg")
 
+    //loading while google api fetches, fixed timeout 
+
     if(this.state.loading){
       return(
       <div style={{backgroundColor: "white", height:"100vh", border:"solid 2px #edf2f7"}}>
        <div id="loader" style={{backgroundColor: "white", display:"flex",marginTop:"10em", justifyContent:"center"}}>
-            <div id="square1" style={{height:"60px", width:"45px", borderRadius:"6px", backgroundColor:"rgba(255, 146, 84, 0.7)", position:"relative", bottom:"20px", left:"10px"}}></div>
-            <div id="square2" style={{height:"60px", width:"45px", borderRadius:"6px", backgroundColor:"rgba(162, 121, 188, 0.7)", position:"relative", top:"20px", right:"10px"}}></div>
         </div>
       </div>
       )
@@ -166,28 +153,17 @@ class App extends Component {
                 <p id="title" class="flex-none text-lg font-medium">{this.props.info[this.state.index].title}</p>
                 <p id="author" class="font-light text-gray-600">{this.props.info[this.state.index].authors}</p>
                 <p id="description" class="h-28 mt-2 text-xs font-light text-gray-700 overflow-auto">{this.props.info[this.state.index].description}</p>
-                <div id="controls" class="text-xs mt-4">
                 <div id="controls" class="flex flex-row text-xs mt-4">
-                      <div class="cursor-pointer w-auto inline-block flex justify-center items-center py-1 px-2 rounded-md bg-purple-200 mr-2 text-purple-800" onClick={this.changeBook.bind(this)}>
-                          <img class="w-4 mr-1" src={refresh}/>
-                          <p class="text-xxs font-medium mr-1">Refresh</p>
-                      </div>
-                    
-                      <div id="addButton" class="cursor-pointer w-auto inline-block flex justify-center items-center py-1 px-2 rounded-md bg-green-200 mr-2 text-teal-800" onClick={this.addBook.bind(this)}>
-                          <img class="w-4 mr-1" src={plus}/>
-                          <p class="text-xxs font-medium mr-1">Add</p>
-                      </div>
-    
+                      <Controls img={refresh} onClick={this.changeBook.bind(this)} class="bg-purple-200 text-purple-800">Refresh</Controls>
+                      <Controls img={plus} onClick={this.addBook.bind(this)} class="bg-green-200 mr-2 text-teal-800">Add</Controls>
+                      
                       <a href={"https://www.amazon.com/s?k=" + this.props.info[this.state.index].title + " by " + this.props.info[this.state.index].authors + "&i=stripbooks&ref=nb_sb_noss&tag=babelshelf-20"} target="_blank">
-                      <div class="cursor-pointer w-auto inline-block flex justify-center items-center py-1 px-2 rounded-md bg-orange-200 mr-2 text-orange-800">
-                          <img class="w-4 mr-1" src={shoppingCart}/>
-                          <p class="text-xxs font-medium mr-1">Buy</p>
-                      </div>
+                        <Controls img={shoppingCart} class="bg-orange-200 text-orange-800">Buy</Controls>
                       </a>
-                  </div>
+
                 </div>
             </div>
-             </div> : null}
+          </div> : null}
     
           <div id="divider" class="mx-4 mt-4 border-b-2 border-grey-100 pb-1">
             <p class="mr-2">Shelf</p>
@@ -199,7 +175,7 @@ class App extends Component {
             </div>
           </div>
       )
-              }}
+  }}
 }
 
    
